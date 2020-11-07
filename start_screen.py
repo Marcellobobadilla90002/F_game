@@ -1,6 +1,5 @@
 import pygame
 
-
 # Start Screen
 
 
@@ -12,6 +11,7 @@ class Game:
         self.SCREEN_W, self.SCREEN_H = 800, 800
         self.screen = pygame.Surface((self.SCREEN_W, self.SCREEN_H))
         self.window = pygame.display.set_mode((self.SCREEN_W, self.SCREEN_H))
+        self.font_name = '8-BIT WONDER.TTF'
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
 
     def game_loop(self):
@@ -20,6 +20,8 @@ class Game:
             if self.START_KEY:
                 self.playing = False
             self.screen.fill(self.BLACK)
+            self.draw_text('Thanks for Playing', 20, self.SCREEN_W/2, self.SCREEN_H/2)
+
             self.window.blit(self.screen, (0, 0))
             pygame.display.update()
             self.reset_keys()
@@ -42,3 +44,10 @@ class Game:
 
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
+
+    def draw_text(self, text, size, x, y):
+        font = pygame.font.Font(self.font_name, size)
+        text_surface = font.render(text, True, self.WHITE)
+        text_rect = text_surface.get_rect()
+        text_rect.center = (x, y)
+        self.screen.blit(text_surface, text_rect)
