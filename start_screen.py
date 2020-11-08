@@ -11,19 +11,22 @@ class Game:
         self.SCREEN_W, self.SCREEN_H = 800, 800
         self.screen = pygame.Surface((self.SCREEN_W, self.SCREEN_H))
         self.window = pygame.display.set_mode((self.SCREEN_W, self.SCREEN_H))
+        self.back_ground = pygame.image.load('bg image.jpg')
         self.font_name = '8-BIT WONDER.TTF'
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
 
     def game_loop(self):
+        pygame.display.set_caption('Agriadventure')
         while self.playing:
             self.check_events()
             if self.START_KEY:
                 self.playing = False
             self.screen.fill(self.BLACK)
             self.draw_text('Thanks for Playing', 20, self.SCREEN_W/2, self.SCREEN_H/2)
-
+            self.window.blit(self.back_ground, (0, 0))
             self.window.blit(self.screen, (0, 0))
             pygame.display.update()
+            pygame.display.flip()
             self.reset_keys()
 
     def check_events(self):
