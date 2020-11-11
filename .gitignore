@@ -1,1 +1,31 @@
 .idea
+import pygame
+
+pygame.init()
+
+# setting basics of the screen and some components
+screenW = 700
+screenH = 700
+window = pygame.display.set_mode((screenW, screenH))
+font_name = '8-BIT WONDER.TTF'
+start_background = pygame.image.load('bg image 700x700.png')
+black = (0, 0, 0)
+white = (255, 255, 255)
+running = True
+pygame.display.set_caption('Agriadventure')
+
+font = pygame.font.Font('8-BIT WONDER.TTF', 30)
+tittlex = 350
+ti
+
+# Start Screen
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    tittle('Agriadventure', 35, screenW / 2, screenH / 2)
+    window.fill(black)
+    window.blit(start_background, (0, 0))
+
+    pygame.display.update()

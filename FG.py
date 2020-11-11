@@ -1,6 +1,92 @@
-from start_screen import Game
+import pygame, sys
 
-g = Game()
-while g.running:
-    g.playing = True
-    g.game_loop()
+# Setup pygame/window ---------------------------------------- #
+mainClock = pygame.time.Clock()
+from pygame.locals import *
+
+pygame.init()
+pygame.display.set_caption('game base')
+screen = pygame.display.set_mode((500, 500))
+background = pygame.image.load('bg image 700x700.png')
+font = pygame.font.SysFont('8-BIT WONDER.TTF', 20)
+
+
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface.blit(textobj, textrect)
+
+textw = 90
+texth = 90
+click = False
+
+
+def main_menu():
+    while True:
+
+        screen.fill((0, 0, 0))
+        mx, my = pygame.mouse.get_pos()
+
+        button_1 = pygame.Rect(100, 100, 100, 50)
+        button_2 = pygame.Rect(100, 300, 100, 50)
+        if button_1.collidepoint((mx, my)):
+            if click:
+                game()
+        if button_2.collidepoint((mx, my)):
+            if click:
+                options()
+        pygame.draw.rect(screen, (255, 0, 0), button_1)
+        pygame.draw.rect(screen, (255, 255, 0),button_2)
+        click = False
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+        # screen.blit(background,(0, 0))
+        pygame.display.update()
+        mainClock.tick(60)
+
+
+def game():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        pygame.display.update()
+        mainClock.tick(60)
+
+
+def options():
+    running = True
+    while running:
+        screen.fill((0, 0, 0))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        pygame.display.update()
+        mainClock.tick(60)
+
+
+main_menu()
