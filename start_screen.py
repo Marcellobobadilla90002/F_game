@@ -14,6 +14,7 @@ screenH = 700
 window = pygame.display.set_mode((screenW, screenH))
 start_background = pygame.image.load('bg image 700x700.png')
 option_screen = pygame.image.load('option screen.png')
+credits_screen = pygame.image.load('option screen.png')
 black = (0, 0, 0)
 white = (255, 255, 255)
 tittle_color = (91, 109, 84)
@@ -32,6 +33,15 @@ def option_text(x, y):
 
 optionx = 90
 optiony = 350
+
+
+def credit_text(x, y):
+    t_credit = font.render("Credits", True, white)
+    window.blit(t_credit, (x, y))
+
+
+creditsX = 90
+creditsY = 450
 
 
 def start_text(x, y):
@@ -57,7 +67,7 @@ def option_titlle(x, y):
     window.blit(tittle2, (x, y))
 
 
-tittle2x = 175
+tittle2x = 150
 tittle2y = 75
 
 
@@ -66,7 +76,7 @@ def text_speed(x, y):
     window.blit(t_speed, (x, y))
 
 
-textspeedx = 225
+textspeedx = 200
 textspeedy = 190
 
 
@@ -75,7 +85,7 @@ def controls_text(x, y):
     window.blit(t_controls, (x, y))
 
 
-controlx = 265
+controlx = 250
 controly = 400
 
 
@@ -106,6 +116,24 @@ fastx = 525
 fasty = 300
 
 
+def wasd_text(x, y):
+    t_wasd = font2.render("WASD", True, white)
+    window.blit(t_wasd, (x, y))
+
+
+wasdX = 100
+wasdY = 520
+
+
+def arrow_keys_text(x, y):
+    t_arrow_k = font2.render("Arrow Keys", True, white)
+    window.blit(t_arrow_k, (x, y))
+
+
+arrowX = 350
+arrowY = 520
+
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Start Screen
 
@@ -119,13 +147,18 @@ def main_menu():
         mx, my = pygame.mouse.get_pos()
 
         start = pygame.Rect(90, 250, 250, 50)
-        option = pygame.Rect(90, 350, 250, 50, )
+        option = pygame.Rect(90, 350, 250, 50)
+        credits = pygame.Rect(90, 450, 280, 50)
         if start.collidepoint((mx, my)):
             if click:
                 game()
         if option.collidepoint((mx, my)):
             if click:
                 options()
+        if credits.collidepoint((mx, my)):
+            if click:
+                credit()
+
         pygame.draw.rect(window, (90, 90, 90), start)
         pygame.draw.rect(window, (255, 0, 0), option)
 
@@ -147,6 +180,7 @@ def main_menu():
                     tittle_text(tittlex, tittley)
                     start_text(startx, starty)
                     option_text(optionx, optiony)
+                    credit_text(creditsX, creditsY)
                     pygame.display.update()
                     mainClock.tick(60)
 
@@ -188,6 +222,26 @@ def options():
         slow(slowx, slowy)
         medium(mediumx, mediumy)
         fast(fastx, fasty)
+        wasd_text(wasdX, wasdY)
+        arrow_keys_text(arrowX, arrowY)
+        pygame.display.update()
+        mainClock.tick(60)
+
+
+def credit():
+    running = True
+    while running:
+        window.fill((255, 255, 255))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        window.blit(credits_screen, (0, 0))
         pygame.display.update()
         mainClock.tick(60)
 
