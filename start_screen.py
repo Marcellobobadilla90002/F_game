@@ -1,8 +1,10 @@
 import pygame
 import sys
-
-mainClock = pygame.time.Clock()
+from pygame import mixer
 from pygame.locals import *
+
+pygame.mixer.init()
+mainClock = pygame.time.Clock()
 
 pygame.init()
 
@@ -17,15 +19,9 @@ white = (255, 255, 255)
 tittle_color = (91, 109, 84)
 pygame.display.set_caption('Agriadventure')
 font = pygame.font.Font('8-BIT WONDER.TTF', 45)
-
-tittlex = 90
-tittley = 120
-startx = 90
-starty = 250
-optionx = 90
-optiony = 350
-tittle2x = 200
-tittle2y = 120
+font2 = pygame.font.Font('8-BIT WONDER.TTF', 30)
+font3 = pygame.font.Font('8-BIT WONDER.TTF', 60)
+mixer.music.load('background music.mp3')
 click = False
 
 
@@ -34,9 +30,17 @@ def option_text(x, y):
     window.blit(option, (x, y))
 
 
+optionx = 90
+optiony = 350
+
+
 def start_text(x, y):
     start = font.render("Start", True, white)
     window.blit(start, (x, y))
+
+
+startx = 90
+starty = 250
 
 
 def tittle_text(x, y):
@@ -44,20 +48,78 @@ def tittle_text(x, y):
     window.blit(tittle, (x, y))
 
 
+tittlex = 90
+tittley = 120
+
+
 def option_titlle(x, y):
-    tittle2 = font.render("Options", True, tittle_color)
+    tittle2 = font3.render("Options", True, tittle_color)
     window.blit(tittle2, (x, y))
 
 
+tittle2x = 175
+tittle2y = 75
+
+
+def text_speed(x, y):
+    t_speed = font2.render("Text Speed", True, white)
+    window.blit(t_speed, (x, y))
+
+
+textspeedx = 225
+textspeedy = 190
+
+
+def controls_text(x, y):
+    t_controls = font2.render("Control", True, white)
+    window.blit(t_controls, (x, y))
+
+
+controlx = 265
+controly = 400
+
+
+def slow(x, y):
+    t_slow = font2.render("Slow", True, white)
+    window.blit(t_slow, (x, y))
+
+
+slowx = 75
+slowy = 300
+
+
+def medium(x, y):
+    t_medium = font2.render("Medium", True, white)
+    window.blit(t_medium, (x, y))
+
+
+mediumx = 275
+mediumy = 300
+
+
+def fast(x, y):
+    t_fast = font2.render("Fast", True, white)
+    window.blit(t_fast, (x, y))
+
+
+fastx = 525
+fasty = 300
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Start Screen
+
 def main_menu():
     global click
+    mixer.music.play()
+
     while True:
         window.fill((0, 0, 0))
+
         mx, my = pygame.mouse.get_pos()
 
-        start = pygame.Rect(90, 250, 200, 50)
-        option = pygame.Rect(90, 350, 200, 50, )
+        start = pygame.Rect(90, 250, 250, 50)
+        option = pygame.Rect(90, 350, 250, 50, )
         if start.collidepoint((mx, my)):
             if click:
                 game()
@@ -121,6 +183,11 @@ def options():
 
         window.blit(option_screen, (0, 0))
         option_titlle(tittle2x, tittle2y)
+        text_speed(textspeedx, textspeedy)
+        controls_text(controlx, controly)
+        slow(slowx, slowy)
+        medium(mediumx, mediumy)
+        fast(fastx, fasty)
         pygame.display.update()
         mainClock.tick(60)
 
