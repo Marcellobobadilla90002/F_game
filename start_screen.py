@@ -15,6 +15,7 @@ window = pygame.display.set_mode((screenW, screenH))
 start_background = pygame.image.load('bg image 700x700.png')
 option_screen = pygame.image.load('option screen.png')
 credits_screen = pygame.image.load('option screen.png')
+player_stand = pygame.image.load('stand.png')
 black = (0, 0, 0)
 white = (255, 255, 255)
 tittle_color = (91, 109, 84)
@@ -22,8 +23,22 @@ pygame.display.set_caption('Agriadventure')
 font = pygame.font.Font('8-BIT WONDER.TTF', 45)
 font2 = pygame.font.Font('8-BIT WONDER.TTF', 30)
 font3 = pygame.font.Font('8-BIT WONDER.TTF', 60)
+font4 = pygame.font.Font('8-BIT WONDER.TTF', 15)
 mixer.music.load('background music.mp3')
 click = False
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Just text def
+
+
+def guide_tittle(x, y):
+    guide = font.render("Guide", True, white)
+    window.blit(guide, (x, y))
+
+
+guideX = 450
+guideY = 350
 
 
 def option_text(x, y):
@@ -42,6 +57,17 @@ def credit_text(x, y):
 
 creditsX = 90
 creditsY = 450
+
+
+def credits(x, y):
+    credits_names = font4.render('''Made by:Isaiah Gonzalez
+Marcello Bobadilla '''
+                                 , True, white)
+    window.blit(credits_names, (x, y))
+
+
+credits_nameX = 50
+credits_nameY = 350
 
 
 def start_text(x, y):
@@ -149,6 +175,7 @@ def main_menu():
         start = pygame.Rect(90, 250, 250, 50)
         option = pygame.Rect(90, 350, 250, 50)
         credits = pygame.Rect(90, 450, 280, 50)
+        guide = pygame.Rect(450, 350, 200, 50)
         if start.collidepoint((mx, my)):
             if click:
                 game()
@@ -158,6 +185,9 @@ def main_menu():
         if credits.collidepoint((mx, my)):
             if click:
                 credit()
+        if guide.collidepoint((mx, my)):
+            if click:
+                guides()
 
         pygame.draw.rect(window, (90, 90, 90), start)
         pygame.draw.rect(window, (255, 0, 0), option)
@@ -177,10 +207,12 @@ def main_menu():
                     click = True
 
                     window.blit(start_background, (0, 0))
+                    window.blit(player_stand, (0, 0))
                     tittle_text(tittlex, tittley)
                     start_text(startx, starty)
                     option_text(optionx, optiony)
                     credit_text(creditsX, creditsY)
+                    guide_tittle(guideX, guideY)
                     pygame.display.update()
                     mainClock.tick(60)
 
@@ -229,6 +261,25 @@ def options():
 
 
 def credit():
+    running = True
+    while running:
+        window.fill((255, 255, 255))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        window.blit(credits_screen, (0, 0))
+        credits(credits_nameX, credits_nameY)
+        pygame.display.update()
+        mainClock.tick(60)
+
+
+def guides():
     running = True
     while running:
         window.fill((255, 255, 255))
