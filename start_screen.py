@@ -29,7 +29,13 @@ mixer.music.load('background music.mp3')
 click = False
 logo = pygame.image.load('images/Logo.png')
 pygame.display.set_icon(logo)
-
+WalkRight = [pygame.image.load('playerIMG/R1.png'), pygame.image.load('playerIMG/R2.png')]
+WalkLeft = [pygame.image.load('playerIMG/L1.png'), pygame.image.load('playerIMG/L2.png')]
+WalkDown = [pygame.image.load('playerIMG/D1.png'), pygame.image.load('playerIMG/D2.png')]
+WalkUp = [pygame.image.load('playerIMG/UP1.png'), pygame.image.load('playerIMG/UP2.png')]
+Stand = pygame.image.load('playerIMG/stand.png')
+start_screen = pygame.image.load('images/mainGameScreen.png')
+walkCount = 0
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -70,14 +76,7 @@ def tittle_text(x, y):
 
 tittlex = 90
 tittley = 120
-# # # # # # # # # # # # #  # # # # #  # ##  # #
-# player def
 
-
-def player(x, y):
-    window.blit(player_stand, (x, y))
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Start Screen
 
 
@@ -130,11 +129,17 @@ def main_menu():
 
 
 def game():
-    x = 50
-    y = 50
-    width = 40
-    height = 60
-    vel = 0.2
+    mainClock.tick(6)
+    global walkCount
+    left = False
+    right = False
+    up = False
+    down = False
+    x = 191
+    y = 638
+    width = 32
+    height = 32
+    vel = 3
 
     running = True
     while running:
@@ -152,15 +157,47 @@ def game():
 
         if keys[pygame.K_LEFT] and x > vel:
             x -= vel
-        if keys[pygame.K_RIGHT] and x < 700 - width - vel:
+            left = True
+            right = False
+        elif keys[pygame.K_RIGHT] and x < 700 - width - vel:
             x += vel
+            left = False
+            right = True
+        else:
+            right = False
+            left = False
+            walkCount = 0
         if keys[pygame.K_UP] and y > vel:
             y -= vel
-        if keys[pygame.K_DOWN] and y < 700 - height - vel:
+            up = True
+            down = False
+        elif keys[pygame.K_DOWN] and y < 700 - height - vel:
             y += vel
+            up = False
+            down = True
+        else:
+            up = False
+            down = False
+            walkCount = 0
 
-        window.fill((255, 255, 255))
-        pygame.draw.rect(window, (255, 255, 0), (x, y, width, height))
+        window.blit(start_screen, (0, 0))
+        if walkCount + 1 >= 4:
+            walkCount = 0
+        if left:
+            window.blit(WalkLeft[walkCount//3], (x, y))
+            walkCount += 1
+        elif right:
+            window.blit(WalkRight[walkCount//3], (x, y))
+            walkCount += 1
+        if up:
+            window.blit(WalkUp[walkCount//3], (x, y))
+            walkCount += 1
+        elif down:
+            window.blit(WalkDown[walkCount//3], (x, y))
+            walkCount += 1
+        else:
+            window.blit(Stand, (x, y))
+        # print(Stand, (x, y))
         pygame.display.update()
 
 
