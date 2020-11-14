@@ -7,7 +7,7 @@ from pygame.locals import *
 pygame.init()
 pygame.display.set_caption('game base')
 screen = pygame.display.set_mode((500, 500))
-background = pygame.image.load('bg image 700x700.png')
+background = pygame.image.load('images/bg image 700x700.png')
 font = pygame.font.SysFont('8-BIT WONDER.TTF', 20)
 
 
