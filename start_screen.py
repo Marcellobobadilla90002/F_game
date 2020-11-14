@@ -2,6 +2,7 @@ import pygame
 import sys
 from pygame import mixer
 from pygame.locals import *
+import math
 
 pygame.mixer.init()
 mainClock = pygame.time.Clock()
@@ -17,6 +18,7 @@ option_screen = pygame.image.load('images/option screen.png')
 credits_screen = pygame.image.load('images/credistScreen.png')
 play_info = pygame.image.load('images/guideScreen.png')
 player_stand = pygame.image.load('stand2.png')
+house_screen = pygame.image.load('images/houseScreen.png')
 black = (0, 0, 0)
 white = (255, 255, 255)
 tittle_color = (91, 109, 84)
@@ -36,6 +38,7 @@ WalkUp = [pygame.image.load('playerIMG/UP1.png'), pygame.image.load('playerIMG/U
 Stand = pygame.image.load('playerIMG/stand.png')
 start_screen = pygame.image.load('images/mainGameScreen.png')
 walkCount = 0
+
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
@@ -77,7 +80,8 @@ def tittle_text(x, y):
 tittlex = 90
 tittley = 120
 
-# Start Screen
+
+# # # # # # # # # # # # # # # # # # # Start Screen
 
 
 def main_menu():
@@ -85,7 +89,6 @@ def main_menu():
     mixer.music.play()
 
     while True:
-        window.fill((0, 0, 0))
 
         mx, my = pygame.mouse.get_pos()
 
@@ -119,8 +122,9 @@ def main_menu():
                     click = True
 
                     window.blit(start_background, (0, 0))
-                    window.blit(player_stand, (0, 0))
+                    window.blit(player_stand, (460, 488))
                     tittle_text(tittlex, tittley)
+                    print((mx, my))
                     start_text(startx, starty)
                     credit_text(creditsX, creditsY)
                     guide_tittle(guideX, guideY)
@@ -131,6 +135,7 @@ def main_menu():
 def game():
     mainClock.tick(6)
     global walkCount
+    global click
     left = False
     right = False
     up = False
@@ -144,6 +149,12 @@ def game():
     running = True
     while running:
 
+        mx, my = pygame.mouse.get_pos()
+        house = pygame.Rect(425, 437, 10, 10)
+        if house.collidepoint((mx, my)):
+            if click:
+                houseScreen()
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -151,6 +162,11 @@ def game():
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     running = False
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        # setting up movement to other screen
 
         # Movement
         keys = pygame.key.get_pressed()
@@ -184,27 +200,26 @@ def game():
         if walkCount + 1 >= 4:
             walkCount = 0
         if left:
-            window.blit(WalkLeft[walkCount//3], (x, y))
+            window.blit(WalkLeft[walkCount // 3], (x, y))
             walkCount += 1
         elif right:
-            window.blit(WalkRight[walkCount//3], (x, y))
+            window.blit(WalkRight[walkCount // 3], (x, y))
             walkCount += 1
         if up:
-            window.blit(WalkUp[walkCount//3], (x, y))
+            window.blit(WalkUp[walkCount // 3], (x, y))
             walkCount += 1
         elif down:
-            window.blit(WalkDown[walkCount//3], (x, y))
+            window.blit(WalkDown[walkCount // 3], (x, y))
             walkCount += 1
         else:
             window.blit(Stand, (x, y))
-        # print(Stand, (x, y))
+
         pygame.display.update()
 
 
 def credit():
     running = True
     while running:
-        window.fill((255, 255, 255))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -222,7 +237,6 @@ def credit():
 def guides():
     running = True
     while running:
-        window.fill((255, 255, 255))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -235,6 +249,77 @@ def guides():
         window.blit(play_info, (0, 0))
         pygame.display.update()
         mainClock.tick(60)
+
+
+def houseScreen():
+    mainClock.tick(6)
+    global walkCount
+    global click
+    left = False
+    right = False
+    up = False
+    down = False
+    x = 200
+    y = 200
+    width = 32
+    height = 32
+    vel = 4
+    running = True
+    while running:
+        window.fill((255, 255, 255))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and x > vel:
+            x -= vel
+            left = True
+            right = False
+        elif keys[pygame.K_RIGHT] and x < 700 - width - vel:
+            x += vel
+            left = False
+            right = True
+        else:
+            right = False
+            left = False
+            walkCount = 0
+        if keys[pygame.K_UP] and y > vel:
+            y -= vel
+            up = True
+            down = False
+        elif keys[pygame.K_DOWN] and y < 700 - height - vel:
+            y += vel
+            up = False
+            down = True
+        else:
+            up = False
+            down = False
+            walkCount = 0
+
+        window.blit(house_screen, (0, 0))
+        if walkCount + 1 >= 4:
+            walkCount = 0
+        if left:
+            window.blit(WalkLeft[walkCount // 3], (x, y))
+            walkCount += 1
+        elif right:
+            window.blit(WalkRight[walkCount // 3], (x, y))
+            walkCount += 1
+        if up:
+            window.blit(WalkUp[walkCount // 3], (x, y))
+            walkCount += 1
+        elif down:
+            window.blit(WalkDown[walkCount // 3], (x, y))
+            walkCount += 1
+        else:
+            window.blit(Stand, (x, y))
+        pygame.display.update()
 
 
 main_menu()
